@@ -224,9 +224,11 @@ static inline Node *node_get_output_port(Node *n, int direction)
     LocationDirection dirs[] = {UP,LEFT,RIGHT,DOWN};
     for(int i=0; i < 4; i++) {
       Node *port = n->ports[dirs[i]];
-      Instruction *inst = &port->instructions[port->ip];
-      if (port && inst->operation == MOV && inst->src_type == ADDRESS && (inst->src.direction == ANY || port->ports[inst->src.direction] == n) ) {
-        return port;
+      if (port) {
+        Instruction *inst = &port->instructions[port->ip];
+        if (inst->operation == MOV && inst->src_type == ADDRESS && (inst->src.direction == ANY || port->ports[inst->src.direction] == n) ) {
+          return port;
+        }
       }
     }
     return NULL;
